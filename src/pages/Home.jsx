@@ -61,15 +61,24 @@ const Home = () => {
   const socket = useRef(null);
   useEffect(() => {
     socket.current = io(API_URL, {
-      withCredentials: true
+      withCredentials: true,
     });
-
+  
+    // Example event listener
+    socket.current.on("connect", () => {
+      console.log("Connected with id:", socket.current.id);
+    });
+  
+    socket.current.on("receiveMessage", (msg) => {
+      console.log("Received message:", msg);
+    });
+  
     // Cleanup on unmount
     return () => {
       if (socket.current) socket.current.disconnect();
     };
   }, [API_URL]);
-
+  
 
 
   useEffect(() => {
