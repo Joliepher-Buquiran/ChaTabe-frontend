@@ -312,7 +312,7 @@ const Home = () => {
       setIsBlocked(convo.isBlocked || false);
       setIsBlockedBy(convo.blockedBy || null);
 
-      socket.emit("joinRoom", convo.conversationId);
+      socket.current.emit("joinRoom", convo.conversationId);
 
       const messageRes = await axios.post("/messages", {
         conversationId: convo.conversationId,
@@ -362,7 +362,7 @@ const Home = () => {
         )
     );
 
-      socket.emit("deleteMessage", {
+      socket.current.emit("deleteMessage", {
         conversationId,
         messageId: messageToDelete._id,
       });
