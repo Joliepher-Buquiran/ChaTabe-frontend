@@ -88,9 +88,9 @@ const Home = () => {
     }, [messages]);
 
     useEffect(() => {
+      if (!socket.current) return;
+    
       const onReceive = (incoming) => {
-        // incoming may be the full saved message object
-        // normalize possible shapes: incoming.conversationId, incoming.conversationId._id, incoming.conversation
         const msgConvId =
           incoming?.conversationId?._id ??
           incoming?.conversationId ??
@@ -99,17 +99,11 @@ const Home = () => {
     
         if (!msgConvId || !conversationId) return;
     
-        // normalize to string for robust comparsion
         if (String(msgConvId) === String(conversationId)) {
-          // append the incoming message (ensure it's not duplicated)
           setMessages(prev => {
-            // optional dedupe by _id
             if (prev.some(m => m._id === incoming._id)) return prev;
             return [...prev, incoming];
           });
-        } else {
-          // optional: update conversation preview / unread count
-          // console.log("Message for other convo received", incoming);
         }
       };
     
@@ -121,45 +115,56 @@ const Home = () => {
         if (String(data.conversationId) === String(conversationId)) setIsTyping(false);
       };
     
-      socket.on("receiveMessage", onReceive);
-      socket.on("typing", onTyping);
-      socket.on("stopTyping", onStopTyping);
+      socket.current.on("receiveMessage", onReceive);
+      socket.current.on("typing", onTyping);
+      socket.current.on("stopTyping", onStopTyping);
     
       return () => {
-        socket.off("receiveMessage", onReceive);
-        socket.off("typing", onTyping);
-        socket.off("stopTyping", onStopTyping);
+        socket.current.off("receiveMessage", onReceive);
+        socket.current.off("typing", onTyping);
+        socket.current.off("stopTyping", onStopTyping);
       };
     }, [conversationId]);
     
+    
 
-  useEffect(() => {
-    socket.on("updateMessage", (data) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg._id === data.messageId ? { ...msg, text: data.text } : msg
-        )
-      );
-    });
-
-    return () => socket.off("updateMessage");
-  }, [conversationId]);
+    useEffect(() => {
+      if (!socket.current) return;
+    
+      const handleUpdate = (data) => {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg._id === data.messageId ? { ...msg, text: data.text } : msg
+          )
+        );
+      };
+    
+      socket.current.on("updateMessage", handleUpdate);
+    
+      return () => socket.current.off("updateMessage", handleUpdate);
+    }, [conversationId]);
+    
 
   
 
-  useEffect(() => {
-  socket.on("deleteMessage", (data) => {
-    if (data.conversationId === conversationId) {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg._id === data.messageId ? { ...msg, isDeleted: true } : msg
-        )
-      );
-    }
-  });
-
-  return () => socket.off("deleteMessage");
-}, [conversationId]);
+    useEffect(() => {
+      if (!socket.current) return;
+    
+      const handleDelete = (data) => {
+        if (data.conversationId === conversationId) {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg._id === data.messageId ? { ...msg, isDeleted: true } : msg
+            )
+          );
+        }
+      };
+    
+      socket.current.on("deleteMessage", handleDelete);
+    
+      return () => socket.current.off("deleteMessage", handleDelete);
+    }, [conversationId]);
+    
 
 
 
