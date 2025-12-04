@@ -197,7 +197,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
 
         <div className="flex flex-col items-center py-4 bg-red-700 px-5 gap-2 rounded-lg">
 
-
+{/* 
             {loading && (
                 <div className="w-full flex justify-center py-2">
                     <div className="flex space-x-2">
@@ -206,7 +206,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
                         <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-300"></div>
                     </div>
                 </div>
-            )}
+            )} */}
 
             {isMeWhoBlocked ? (
 

@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 
 
-const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMessage, handleSelectUser,conversationId,isBlocked,isBlockedBy,openDeleteModal,loading}) => {
+const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMessage, handleSelectUser,conversationId,isBlocked,isBlockedBy,openDeleteModal,loadingMessages}) => {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fallback for safety
 
@@ -41,7 +41,7 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
 
         <div className="flex-1 overflow-y-auto p-2 mb-3 rounded-md sm:h-[70vh] md:h-[80vh] max-h-[70vh] bg-transparent">
           
-          {loading ? (
+          {loadingMessages ? (
 
             
               <div className="flex flex-col items-center gap-3">

@@ -55,6 +55,8 @@ const Home = () => {
   const [selectedMood, setSelectedMood] = useState(null); 
 
   const [loading, setLoading] = useState(true)
+  const [loadingMessages, setLoadingMessages] = useState(false);
+
 
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fallback for safety
@@ -300,7 +302,7 @@ const Home = () => {
     setConversationId(null)
     setIsBlocked(false)
     setIsBlockedBy(false)
-    setLoading(true); 
+    setLoadingMessages(true); 
 
     if (!receiverId || !userData?.user?._id) return;
 
@@ -349,7 +351,7 @@ const Home = () => {
       console.error("Error fetching conversation or messages:", error);
       setMessages([]);
     }finally {
-      setLoading(false);  
+      setLoadingMessages(false);  
     }
   };
 
@@ -790,7 +792,7 @@ const Home = () => {
                 openDeleteModal={openDeleteModal}
                 isBlocked={isBlocked}
                 isBlockedBy={isBlockedBy}
-                loading={loading}
+                loadingMessages={loadingMessages}
               />
 
               <MessageInputComponent  
