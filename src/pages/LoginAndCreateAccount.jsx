@@ -135,18 +135,19 @@ const handleRegister = async (e) => {
   return (
     <>
 
-    {loading && (
-       <div className="flex justify-center mt-10">
-       <div className="flex flex-col items-center gap-3">
-         <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
-         <p className="text-[#6f2db7] font-semibold">Loading messages...</p>
-       </div>
-     </div>
-    )}
 
 
     <div className='h-screen bg-gradient-to-b from-white via-[#e4e4eb] to-[#2d00c2] flex items-center justify-center w-screen rounded-xl '>
 
+      {loading && (
+         <div className="flex justify-center mt-10">
+         <div className="flex flex-col items-center gap-3">
+           <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+           <p className="text-[#6f2db7] font-semibold">Loading ...</p>
+         </div>
+       </div>
+      )}
+      
       {
       (isLoginPage)?(
         <>
