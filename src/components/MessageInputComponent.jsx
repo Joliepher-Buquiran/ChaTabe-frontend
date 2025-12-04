@@ -35,6 +35,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
     const [message,setMessage] = useState('')
     const [inputText, setInputText] = useState('');
     const [isClose,setIsClose] = useState(true)
+    const [sendLoading ,setSendLoading] = useState(false)
 
     
     const isMeWhoBlocked = isBlocked && blockedBy === currentUserId;
@@ -55,7 +56,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
 
 
         try {
-            setLoading(true)
+            setSendLoading(true)
 
             if(!inputText.trim()) return
 
@@ -118,7 +119,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
             console.log('Error sending data',error)
 
         }finally{
-            setLoading(false)
+            setSendLoading(false)
         }
 
     }
@@ -197,7 +198,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
 
         <div className="flex flex-col items-center py-4 bg-red-700 px-5 gap-2 rounded-lg">
 
-{/* 
+
             {loading && (
                 <div className="w-full flex justify-center py-2">
                     <div className="flex space-x-2">
@@ -206,7 +207,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
                         <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-300"></div>
                     </div>
                 </div>
-            )} */}
+            )}
 
             {isMeWhoBlocked ? (
 
