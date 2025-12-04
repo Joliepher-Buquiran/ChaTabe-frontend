@@ -140,7 +140,7 @@ const handleRegister = async (e) => {
       
     {
       isLoginPage? (
-        <>
+        
 
         loading ? (
 
@@ -188,7 +188,7 @@ const handleRegister = async (e) => {
             
         </div>
         )
-        </>
+        
       ):(
 
         loading ? (
