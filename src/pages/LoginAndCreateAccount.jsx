@@ -136,21 +136,24 @@ const handleRegister = async (e) => {
     <>
 
 
-
     <div className='h-screen bg-gradient-to-b from-white via-[#e4e4eb] to-[#2d00c2] flex items-center justify-center w-screen rounded-xl '>
-
-      {loading && (
-         <div className="flex justify-center mt-10">
-         <div className="flex flex-col items-center gap-3">
-           <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
-           <p className="text-[#6f2db7] font-semibold">Loading ...</p>
-         </div>
-       </div>
-      )}
       
-      {
-      (isLoginPage)?(
+    {
+      isLoginPage? (
         <>
+
+        loading ? (
+
+          <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[#6f2db7] font-semibold">Loading...</p>
+          </div>
+          </div>
+
+        ):(
+
+        
 
         <div className='bg-transparent mx-auto  p-6 w-8/12 sm:w-2/4 md:w-1/3 lg:w-2/6 xl:w-2/6 2xl:w-[20%]  shadow-2xl'>
             <h1 className='text-4xl font-bold text-center text-[#6f2db7] mb-3 2xl:text-3xl'>Login</h1>
@@ -184,8 +187,20 @@ const handleRegister = async (e) => {
             </form>
             
         </div>
+        )
         </>
       ):(
+
+        loading ? (
+
+          <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[#6f2db7] font-semibold">Loading...</p>
+          </div>
+          </div>
+
+        ):(
 
          <div className='bg-transparent mx-auto  p-6 w-8/12 sm:w-2/4 md:w-1/3 lg:w-2/6 xl:w-2/6 2xl:w-[20%]  shadow-2xl shadow-2xl shadow-gray-700 rounded-xl'>
 
@@ -298,13 +313,15 @@ const handleRegister = async (e) => {
         
 
         </div>
-
       )
+        
+    )
 
     }
  
 
     </div>
+    
     </>
   )
 }
