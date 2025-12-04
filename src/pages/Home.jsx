@@ -54,6 +54,8 @@ const Home = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedMood, setSelectedMood] = useState(null); 
 
+  const [loading, setLoading] = useState(true)
+
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fallback for safety
 
@@ -171,6 +173,9 @@ const Home = () => {
   useEffect(() => {
     async function fetchUserData() {
       try {
+
+        setLoading(true); 
+
         const res = await axios.get('/user-data',{
           withCredentials: true
         })
@@ -180,6 +185,8 @@ const Home = () => {
 
       } catch (error) {
         console.error("Error fetching user data:", error);
+      }finally {
+        setLoading(false);  
       }
     }
  
@@ -213,7 +220,11 @@ const Home = () => {
   const selectedUser = userData?.user?.contacts?.find(user => user._id === userId);
   
   const handleSearch = async () => {
+
   try {
+
+    setLoading(true); 
+
     const response = await axios.get(`/search?username=${query}`, {
       withCredentials: true
     });
@@ -222,11 +233,16 @@ const Home = () => {
   } catch (error) {
     console.log('Search error:', error);
     setResults([]);
+  }finally {
+    setLoading(false);  
   }
 };
 
   const addContact = async (contactId) => {
     try {
+
+      setLoading(true); 
+
       const response = await axios.post('/add-contact',{
         contactId
       },{ withCredentials: true})
@@ -253,14 +269,19 @@ const Home = () => {
         alert('Something went wrong')
         console.log('Something went wrong ',error )
       }
+    }finally {
+      setLoading(false);  
     }
   }
     
   const Logout = async () => {
     if (loggingOut) return;      
     setLoggingOut(true);
-
+    
     try {
+
+      setLoading(true);
+
       await axios.post('/logout', {}, { withCredentials: true });
       navigate('/');
     } catch (error) {
@@ -268,6 +289,7 @@ const Home = () => {
     } finally {
       setLoggingOut(false);
       setShowLogoutModal(false);  
+      setLoading(false)
     }
   };
 
@@ -278,6 +300,7 @@ const Home = () => {
     setConversationId(null)
     setIsBlocked(false)
     setIsBlockedBy(false)
+    setLoading(true); 
 
     if (!receiverId || !userData?.user?._id) return;
 
@@ -325,6 +348,8 @@ const Home = () => {
     } catch (error) {
       console.error("Error fetching conversation or messages:", error);
       setMessages([]);
+    }finally {
+      setLoading(false);  
     }
   };
 
@@ -350,7 +375,7 @@ const Home = () => {
 
   const confirmDelete = async () => {
     if (!messageToDelete) return;
-
+    setLoading(true); 
     console.log('Deleting message:', messageToDelete);
 
     try {
@@ -373,12 +398,14 @@ const Home = () => {
       console.error("Delete failed:", error);
     } finally {
       closeDeleteModal();
+      setLoading(false)
     }
   };
 
   const blockContact = async () => {
     if (isBlocking) return;      
     setIsBlocking(true);
+    setLoading(true); 
 
     try {
       const response = await axios.post('/block-contact',{
@@ -394,6 +421,7 @@ const Home = () => {
     } finally {
       setIsBlocking(false);
       setShowBlockModal(false);
+      setLoading(false)
     }
   }
 
@@ -407,6 +435,7 @@ const Home = () => {
   ];
 
   const updateMood = async (newMood) => {
+    setLoading(true); 
     try {
       await axios.post('/update-mood', { moodStatus: newMood }, { withCredentials: true });
       
@@ -419,11 +448,24 @@ const Home = () => {
     } catch (err) {
       alert("Failed to update mood");
       console.error(err);
+    }finally {
+      setLoading(false);  
     }
   };
 
   return (
+
+    
     <div className="flex flex-col h-screen bg-gradient-to-r from-[#ffffff] to-[#9176e8]">
+
+      {loading && (
+        <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[#6f2db7] font-semibold">Loading...</p>
+          </div>
+        </div>
+      )}
 
       {showDeleteModal && (
         <ConfirmationModal
@@ -459,6 +501,8 @@ const Home = () => {
           Logout={Logout}
         />
       )}
+
+      
 
   {showProfileModal && (
     <div className="fixed inset-0 bg-white/10 backdrop-blur-md flex items-center justify-center z-50">
