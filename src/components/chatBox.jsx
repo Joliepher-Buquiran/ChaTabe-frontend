@@ -24,7 +24,7 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
   useEffect(() => {
     if (!conversationId) return;
   
-    socket.emit("joinRoom", conversationId);
+    socket.current.emit("joinRoom", conversationId);
   
   }, [conversationId]);
   

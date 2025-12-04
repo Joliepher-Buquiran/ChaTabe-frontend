@@ -59,7 +59,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
             if(!inputText.trim()) return
 
             if (conversationId) {
-                socket.emit("joinRoom", conversationId);  
+                socket.current.emit("joinRoom", conversationId);  
             }
 
             if(!senderId || !receiverId){
@@ -92,17 +92,17 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
               
               // Ensure sender is in the room (helps with race)
               if (convId) {
-                socket.emit("joinRoom", convId);
+                socket.current.emit("joinRoom", convId);
               }
               
               // Broadcast to other participants
-              socket.emit("sendMessage", {
+              socket.current.emit("sendMessage", {
                 conversationId: convId,
                 message: savedMessage
               });
               
               // stop typing
-              socket.emit("stopTyping", { conversationId: convId, senderId });
+              socket.current.emit("stopTyping", { conversationId: convId, senderId });
 
             console.log('Message sent successfully')
 
@@ -139,7 +139,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
                 )
             );
 
-        socket.emit("updateMessage", {
+        socket.current.emit("updateMessage", {
             conversationId,
             messageId: editingMessage._id,
             text: inputText,
@@ -177,11 +177,11 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
     const handleTyping = (e) => {
         setInputText(e.target.value);
 
-        socket.emit("typing", { conversationId, senderId });
+        socket.current.emit("typing", { conversationId, senderId });
 
         if (typingTimeout) clearTimeout(typingTimeout);
         typingTimeout = setTimeout(() => {
-        socket.emit("stopTyping", { conversationId, senderId });
+        socket.current.emit("stopTyping", { conversationId, senderId });
         }, 1200);
   };
 
