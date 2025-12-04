@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import { Search, MessageSquareText, Smile, ThumbsUp,MessageCircleOff,LogOut,X ,SendHorizontal } from "lucide-react";
 import axios from "axios";
 import { io } from "socket.io-client";
