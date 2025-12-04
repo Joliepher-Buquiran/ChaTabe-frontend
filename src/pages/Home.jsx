@@ -808,6 +808,8 @@ const Home = () => {
                 setShowUnblockModal={setShowUnblockModal}
                 currentUserId={userData?.user?._id}
                 setMessages={setMessages}
+                loading={loading}
+                setLoading={setLoading}
               />
             </>
           ) : (

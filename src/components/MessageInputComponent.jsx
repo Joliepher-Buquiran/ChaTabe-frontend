@@ -15,7 +15,7 @@ let typingTimeout = null;
 
 
 //Pass the props
-export const MessageInputComponent = ({senderId, receiverId,senderUsername,receiverUsername, handleSelectUser,conversationId, editingMessage,   setEditingMessage, isBlocked,blockedBy, setShowUnblockModal,currentUserId,setMessages}) => {
+export const MessageInputComponent = ({senderId, receiverId,senderUsername,receiverUsername, handleSelectUser,conversationId, editingMessage,   setEditingMessage, isBlocked,blockedBy, setShowUnblockModal,currentUserId,setMessages,loading,setLoading}) => {
   
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fallback for safety
 
@@ -55,6 +55,7 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
 
 
         try {
+            setLoading(true)
 
             if(!inputText.trim()) return
 
@@ -116,6 +117,8 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
             
             console.log('Error sending data',error)
 
+        }finally{
+            setLoading(false)
         }
 
     }
@@ -193,6 +196,17 @@ export const MessageInputComponent = ({senderId, receiverId,senderUsername,recei
      {isBlocked ? (
 
         <div className="flex flex-col items-center py-4 bg-red-700 px-5 gap-2 rounded-lg">
+
+
+            {loading && (
+                <div className="w-full flex justify-center py-2">
+                    <div className="flex space-x-2">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-150"></div>
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-300"></div>
+                    </div>
+                </div>
+            )}
 
             {isMeWhoBlocked ? (
 
