@@ -30,6 +30,8 @@ const Login = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [profilePic, setProfilePic] = useState("");
 
+  const [loading,setLoading] = useState(false)
+
   
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fallback for safety
 
@@ -37,6 +39,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Fall
 const handleRegister = async (e) => {
 
     e.preventDefault();
+    setLoading(true)
 
     if (!registerUsername || !registerPassword || !registerEmail || !age || !gender) {
       alert("Please fill all fields");
@@ -79,6 +82,8 @@ const handleRegister = async (e) => {
     } catch (error) {
       console.error("Something went wrong", error);
       alert(error.response?.data?.message || "Something went wrong");
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -86,6 +91,7 @@ const handleRegister = async (e) => {
 
   const handleLogin = async(e) =>{
     e.preventDefault()
+    setLoading(true)
 
     try {
 
@@ -120,12 +126,24 @@ const handleRegister = async (e) => {
       console.log('Something went wrong',error);
       alert('Invalid credentials')
       
+    }finally{
+      setLoading(false)
     }
 
   }
   
   return (
     <>
+
+    {loading && (
+       <div className="flex justify-center mt-10">
+       <div className="flex flex-col items-center gap-3">
+         <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+         <p className="text-[#6f2db7] font-semibold">Loading messages...</p>
+       </div>
+     </div>
+    )}
+
 
     <div className='h-screen bg-gradient-to-b from-white via-[#e4e4eb] to-[#2d00c2] flex items-center justify-center w-screen rounded-xl '>
 

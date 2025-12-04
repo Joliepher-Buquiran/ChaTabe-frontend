@@ -56,6 +56,7 @@ const Home = () => {
 
   const [loading, setLoading] = useState(true)
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [globalLoading,setGlobalLoading] = useState(false)
 
 
 
@@ -243,7 +244,7 @@ const Home = () => {
   const addContact = async (contactId) => {
     try {
 
-      setLoading(true); 
+      
 
       const response = await axios.post('/add-contact',{
         contactId
@@ -271,8 +272,6 @@ const Home = () => {
         alert('Something went wrong')
         console.log('Something went wrong ',error )
       }
-    }finally {
-      setLoading(false);  
     }
   }
     
@@ -282,7 +281,7 @@ const Home = () => {
     
     try {
 
-      setLoading(true);
+      setGlobalLoading(true);
 
       await axios.post('/logout', {}, { withCredentials: true });
       navigate('/');
@@ -291,7 +290,7 @@ const Home = () => {
     } finally {
       setLoggingOut(false);
       setShowLogoutModal(false);  
-      setLoading(false)
+      setGlobalLoading(false)
     }
   };
 
@@ -377,7 +376,7 @@ const Home = () => {
 
   const confirmDelete = async () => {
     if (!messageToDelete) return;
-    setLoading(true); 
+    setGlobalLoading(true); 
     console.log('Deleting message:', messageToDelete);
 
     try {
@@ -400,14 +399,14 @@ const Home = () => {
       console.error("Delete failed:", error);
     } finally {
       closeDeleteModal();
-      setLoading(false)
+      setGlobalLoading(false)
     }
   };
 
   const blockContact = async () => {
     if (isBlocking) return;      
     setIsBlocking(true);
-    setLoading(true); 
+    setGlobalLoading(true); 
 
     try {
       const response = await axios.post('/block-contact',{
@@ -423,7 +422,7 @@ const Home = () => {
     } finally {
       setIsBlocking(false);
       setShowBlockModal(false);
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -437,7 +436,7 @@ const Home = () => {
   ];
 
   const updateMood = async (newMood) => {
-    setLoading(true); 
+    setGlobalLoading(true); 
     try {
       await axios.post('/update-mood', { moodStatus: newMood }, { withCredentials: true });
       
@@ -451,7 +450,7 @@ const Home = () => {
       alert("Failed to update mood");
       console.error(err);
     }finally {
-      setLoading(false);  
+      setGlobalLoading(false);  
     }
   };
 
@@ -460,7 +459,14 @@ const Home = () => {
     
     <div className="flex flex-col h-screen bg-gradient-to-r from-[#ffffff] to-[#9176e8]">
 
-      
+      {globalLoading && (
+         <div className="flex justify-center mt-10">
+         <div className="flex flex-col items-center gap-3">
+           <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+           <p className="text-[#6f2db7] font-semibold">Loading messages...</p>
+         </div>
+       </div>
+      )}
 
       {showDeleteModal && (
         <ConfirmationModal
