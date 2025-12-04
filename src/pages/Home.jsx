@@ -721,12 +721,12 @@ const Home = () => {
             
           {
           loading ? (
-            <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-50">
+            
               <div className="flex flex-col items-center gap-3">
                 <div className="w-10 h-10 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-[#6f2db7] font-semibold">Loading...</p>
               </div>
-            </div>
+           
           ):userData?.user?.contacts?.length > 0 ? (
                 userData.user.contacts.map(user => (
                   <li
