@@ -51,7 +51,7 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
             </div>
 
             ) : messages.length > 0 ? (
-              
+
             messages.map((msg, index) => {
               const isOwnMessage =
                 (msg?.sender?._id && msg.sender._id === userData?.user?._id) ||
@@ -121,7 +121,8 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
             })
           ) : (
             <p className="text-[#6f2db7] text-lg text-center mt-5">No messages yet</p>
-          )}
+          )
+      }
         </div>
 
 
