@@ -777,6 +777,7 @@ const Home = () => {
 
               <div className="w-full bg-white h-[1px] my-2"></div>
         
+            
               <ChatBox 
                 messages={messages}
                 messagesEndRef={messagesEndRef}

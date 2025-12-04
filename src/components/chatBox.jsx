@@ -41,8 +41,17 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
 
         <div className="flex-1 overflow-y-auto p-2 mb-3 rounded-md sm:h-[70vh] md:h-[80vh] max-h-[70vh] bg-transparent">
           
-          
-          {messages.length > 0 ? (
+          {loading ? (
+
+            <div className="flex justify-center mt-10">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-[#6f2db7] font-semibold">Loading messages...</p>
+              </div>
+            </div>
+
+            ) : messages.length > 0 ? (
+              
             messages.map((msg, index) => {
               const isOwnMessage =
                 (msg?.sender?._id && msg.sender._id === userData?.user?._id) ||
@@ -52,15 +61,6 @@ const ChatBox = ({messages,messagesEndRef,userData,moodColorHandler,setEditingMe
               
               return (
                 <>
-
-                {loading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-50">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-8 h-8 border-4 border-[#6f2db7] border-t-transparent rounded-full animate-spin"></div>
-                      <p className="text-[#6f2db7] font-semibold">Loading...</p>
-                    </div>
-                  </div>
-                )}
 
                 <div
                   key={msg._id || index}
