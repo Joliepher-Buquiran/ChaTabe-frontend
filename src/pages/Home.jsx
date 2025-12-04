@@ -788,6 +788,7 @@ const Home = () => {
                 openDeleteModal={openDeleteModal}
                 isBlocked={isBlocked}
                 isBlockedBy={isBlockedBy}
+                loading={loading}
               />
 
               <MessageInputComponent  
